@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ORBITAL HEALTH — an educational astronaut health monitoring prototype.">
+<title>ORBITAL HEALTH | Crew Health Center</title>
+<style>
+:root{--bg:#071426;--panel:#10243c;--panel2:#142d49;--line:#27415f;--ink:#eef6ff;--muted:#a8bfd8;--cyan:#63c7ff;--green:#5dd6aa;--amber:#f4c56a;--red:#ff7c87;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#173b60 0,transparent 42%),var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:22px max(20px,calc((100vw - 1180px)/2));border-bottom:1px solid #29445f;background:#071426dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:15px;max-width:1180px;margin:auto}.brand small{color:var(--cyan);letter-spacing:.16em;font-weight:800}.brand h1{margin:2px 0;font-size:clamp(23px,4vw,34px);letter-spacing:.04em}.status{border:1px solid #2d785f;color:#8ff0c6;padding:7px 11px;border-radius:999px;font-size:12px;white-space:nowrap}
+main{max-width:1180px;margin:26px auto;padding:0 18px 50px}.hero{padding:28px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(120deg,#112e4d,#0d1c31);display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:center}.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:.12em;font-size:12px}.hero h2{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:10px 0}.hero p{color:var(--muted);max-width:700px}.orb{width:170px;height:170px;border-radius:50%;margin:auto;background:radial-gradient(circle at 32% 30%,#c4edff,#3899d4 24%,#15426e 56%,#071426 72%);box-shadow:0 0 50px #2e9ee755;position:relative}.orb:after{content:"";position:absolute;inset:-12px;border:1px solid #70cfff88;border-radius:50%;transform:rotate(-22deg) scaleY(.35)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}button,.tab{border:1px solid var(--line);background:#10243c;color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer;font:inherit}.tab[aria-selected=true],button.primary{background:#17608d;border-color:#328fc1}.tab:hover,button:hover{filter:brightness(1.18)}button:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:linear-gradient(145deg,#10243c,#0c1c30);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:14px 0}.panel h3{margin:0 0 14px;font-size:19px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#0b1b2e;border:1px solid #243e5b;border-radius:15px;padding:15px}.metric label,.muted{color:var(--muted);font-size:13px}.value{font-size:28px;font-weight:750;margin:4px 0}.unit{color:var(--muted);font-size:12px}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:180px}label{display:block;color:#c8d9eb;font-size:13px;margin:10px 0 5px}input,select,textarea{width:100%;background:#071629;color:var(--ink);border:1px solid #36516e;border-radius:10px;padding:11px;font:inherit}textarea{min-height:90px;resize:vertical}.hint{font-size:12px;color:var(--muted)}.notice{padding:13px;border-radius:12px;background:#132b43;border-left:4px solid var(--cyan);color:#d9eaff;margin:12px 0}.alert{border-left-color:var(--amber)}.danger{border-left-color:var(--red)}.success{border-left-color:var(--green)}.hidden{display:none!important}
+.chart{width:100%;height:210px;background:#09192b;border:1px solid #233d59;border-radius:14px;padding:10px}.chart svg{width:100%;height:100%}.bodymap{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}.silhouette{min-height:320px;display:flex;align-items:center;justify-content:center}.silhouette svg{height:310px;max-width:100%}.body-part{cursor:pointer;fill:#397eae;stroke:#9adfff;stroke-width:2}.body-part:hover,.body-part.active{fill:#65c7ff}.detail{background:#0a1b2e;border:1px solid var(--line);border-radius:14px;padding:16px;min-height:180px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.hazard{background:#0a1b2e;border:1px solid #29435f;border-radius:14px;padding:16px}.hazard h4{margin:0 0 7px;color:#b9e7ff}.hazard p{margin:0;color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--muted);font-size:12px}.smallcaps{font-size:11px;letter-spacing:.12em;color:var(--cyan);font-weight:800}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.orb{width:110px;height:110px}.grid{grid-template-columns:repeat(2,1fr)}.bodymap{grid-template-columns:1fr}.silhouette{min-height:240px}.silhouette svg{height:240px}}
+@media(max-width:520px){.grid,.cards{grid-template-columns:1fr}.brand{align-items:flex-start}.status{font-size:10px}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div><small>HUMAN SPACEFLIGHT · CREW WELLNESS</small><h1>ORBITAL HEALTH</h1></div><span class="status">● EDUCATIONAL PROTOTYPE</span></div></header>
+<main>
+<section class="hero"><div><div class="eyebrow">KNOW YOUR BODY. PROTECT YOUR MISSION.</div><h2>Health intelligence for life beyond Earth.</h2><p>A crew-focused concept for recording health observations, understanding spaceflight hazards and supporting medically governed decisions during long-duration missions.</p><div class="row"><button class="primary" onclick="showTab('assessment')">Start a check-in</button><button onclick="showTab('science')">Explore spaceflight hazards</button></div></div><div class="orb" aria-label="Stylized planet Earth"></div></section>
+<nav aria-label="Main navigation">
+<button class="tab" data-tab="dashboard" aria-selected="true" onclick="showTab('dashboard')">Overview</button>
+<button class="tab" data-tab="assessment" aria-selected="false" onclick="showTab('assessment')">Health check-in</button>
+<button class="tab" data-tab="trends" aria-selected="false" onclick="showTab('trends')">Trends</button>
+<button class="tab" data-tab="body" aria-selected="false" onclick="showTab('body')">Body map</button>
+<button class="tab" data-tab="science" aria-selected="false" onclick="showTab('science')">Space hazards</button>
+<button class="tab" data-tab="guide" aria-selected="false" onclick="showTab('guide')">Guidance</button>
+</nav>
+
+<section id="dashboard" class="view">
+<div class="panel"><div class="smallcaps">MISSION HEALTH CENTER</div><h3>Health snapshot</h3><p class="muted">Example values are shown until you enter your own demonstration data. This app does not diagnose illness or determine fitness for flight.</p>
+<div class="grid">
+<div class="metric"><label>Heart rate</label><div class="value" id="mHR">—</div><div class="unit">beats / minute</div></div>
+<div class="metric"><label>Blood pressure</label><div class="value" id="mBP">—</div><div class="unit">mmHg</div></div>
+<div class="metric"><label>Temperature</label><div class="value" id="mTemp">—</div><div class="unit">°C</div></div>
+<div class="metric"><label>Sleep</label><div class="value" id="mSleep">—</div><div class="unit">hours</div></div>
+</div><div id="summary" class="notice">No check-in recorded in this session. Select Health check-in to enter demonstration values.</div></div>
+<div class="panel"><h3>How the system thinks</h3><div class="cards">
+<div class="hazard"><h4>1 · Collect</h4><p>Gather measurements, self-reports, device readings and environmental observations.</p></div>
+<div class="hazard"><h4>2 · Validate</h4><p>Check units, timestamps, device quality and whether required information is missing.</p></div>
+<div class="hazard"><h4>3 · Compare</h4><p>Compare against medically approved individual baselines, not a single universal threshold.</p></div>
+<div class="hazard"><h4>4 · Escalate</h4><p>Explain the reason for an alert and direct the crew to approved medical procedures.</p></div>
+</div></div></section>
+
+<section id="assessment" class="view hidden">
+<div class="panel"><div class="smallcaps">CREW SELF-ASSESSMENT</div><h3>Record a health check-in</h3><div class="notice alert">Use only fictional or demonstration information in this public prototype. Do not enter real medical, identifying or sensitive personal data. Entries stay in this browser session and are not sent to a server.</div>
+<form id="healthForm">
+<div class="row"><div><label for="crew">Crew identifier (fictional)</label><input id="crew" value="Crew Member 01" maxlength="40"></div><div><label for="mission">Mission environment</label><select id="mission"><option>Deep-space transit</option><option>Space station</option><option>Lunar surface base</option><option>Planetary rover</option></select></div></div>
+<div class="row"><div><label for="hr">Heart rate (BPM)</label><input id="hr" type="number" min="20" max="250" placeholder="e.g. 72" required></div><div><label for="bp">Blood pressure (systolic/diastolic, mmHg)</label><input id="bp" placeholder="e.g. 120/80" pattern="[0-9]{2,3}/[0-9]{2,3}" required></div></div>
+<div class="row"><div><label for="temp">Body temperature (°C)</label><input id="temp" type="number" min="30" max="45" step=".1" placeholder="e.g. 36.8" required></div><div><label for="glucose">Blood glucose (mg/dL, if measured)</label><input id="glucose" type="number" min="20" max="700" placeholder="Optional"></div></div>
+<div class="row"><div><label for="sleep">Sleep during last sleep period (hours)</label><input id="sleep" type="number" min="0" max="24" step=".1" placeholder="e.g. 7.5" required></div><div><label for="mood">Mood / stress self-report</label><select id="mood"><option>Stable</option><option>Good</option><option>Low</option><option>Stressed</option><option>Prefer not to say</option></select></div></div>
+<div class="row"><div><label for="exercise">Exercise routine</label><select id="exercise"><option>Completed as scheduled</option><option>Modified session</option><option>Not completed</option></select></div><div><label for="nutrition">Nutrition observation</label><select id="nutrition"><option>Normal intake</option><option>Reduced intake</option><option>Poor appetite / difficulty eating</option></select></div></div>
+<label for="radiation">Radiation dosimeter observation (include units and period)</label><input id="radiation" placeholder="Optional — enter the device-reported reading and units">
+<label for="symptoms">Symptoms or observations</label><textarea id="symptoms" placeholder="Use fictional example notes only."></textarea>
+<label><input id="urgent" type="checkbox" style="width:auto;margin-right:8px">New, severe or rapidly worsening symptom reported (demonstration flag)</label>
+<button class="primary" type="submit">Generate check-in summary</button>
+</form><div id="result" class="hidden"></div></div></section>
+
+<section id="trends" class="view hidden">
+<div class="panel"><h3>Health trends</h3><p class="muted">Illustrative sample data only — not measurements from an astronaut and not clinical reference ranges.</p><div class="chart"><svg viewBox="0 0 700 180" role="img" aria-label="Illustrative heart rate trend"><g stroke="#29435f" stroke-width="1"><path d="M35 20H680M35 60H680M35 100H680M35 140H680"/></g><polyline points="40,92 130,78 220,86 310,54 400,68 490,42 580,61 670,49" fill="none" stroke="#63c7ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g fill="#63c7ff"><circle cx="40" cy="92" r="5"/><circle cx="130" cy="78" r="5"/><circle cx="220" cy="86" r="5"/><circle cx="310" cy="54" r="5"/><circle cx="400" cy="68" r="5"/><circle cx="490" cy="42" r="5"/><circle cx="580" cy="61" r="5"/><circle cx="670" cy="49" r="5"/></g><g fill="#a8bfd8" font-size="11"><text x="38" y="168">Day 1</text><text x="220" y="168">Day 3</text><text x="400" y="168">Day 5</text><text x="610" y="168">Day 8</text></g></svg></div><p class="hint">A production version should chart timestamped records, show units and data quality, and compare results with an individual's approved baseline.</p></div>
+<div class="panel"><h3>Trend interpretation principles</h3><ul class="muted"><li>Look for persistent changes rather than overreacting to one isolated reading.</li><li>Check measurement technique, device quality and timing before interpreting a result.</li><li>Combine symptoms and multiple indicators only under validated clinical rules.</li><li>Never let an app trend override symptoms or mission emergency procedures.</li></ul></div>
+</section>
+
+<section id="body" class="view hidden">
+<div class="panel"><h3>Interactive body systems map</h3><p class="muted">Select a highlighted body region to learn which health questions and examinations may be relevant.</p><div class="bodymap"><div class="silhouette"><svg viewBox="0 0 180 340" role="img" aria-label="Selectable simplified human body illustration"><circle class="body-part active" data-part="brain" cx="90" cy="36" r="25"/><path class="body-part" data-part="heart" d="M65 76 Q90 62 115 76 L126 165 Q90 180 54 165Z"/><path class="body-part" data-part="bones" d="M54 166 L72 168 L68 245 L53 315 L40 315 L52 240Z M108 168 L126 166 L128 240 L140 315 L126 315 L110 245Z"/><path class="body-part" data-part="immune" d="M56 82 L36 95 L22 170 L38 176 L62 120Z M124 82 L144 95 L158 170 L142 176 L118 120Z"/></svg></div><div class="detail" id="bodyDetail"><div class="smallcaps">BRAIN & NERVOUS SYSTEM</div><h3>Behavior, sleep and neurological function</h3><p class="muted">Relevant observations can include sleep patterns, mood, fatigue, balance and visual changes. Concerns require the mission's approved clinical assessment.</p><p class="hint">Possible methods: questionnaires, actigraphy, clinical neurological and vision examinations.</p></div></div></div>
+</section>
+
+<section id="science" class="view hidden">
+<div class="panel"><h3>NASA's five human-spaceflight hazards</h3><p class="muted">Spaceflight hazards interact. A single exposure may affect several body systems.</p><div class="cards">
+<div class="hazard"><h4>01 · Space radiation</h4><p>Ionizing radiation can damage cells and DNA. Monitor dosimeter readings, cumulative exposure and mission radiation alerts. Follow approved shelter and exposure protocols.</p></div>
+<div class="hazard"><h4>02 · Isolation and confinement</h4><p>Confinement can affect mood, sleep, stress and teamwork. Monitor sleep, fatigue and behavioral-health questionnaires; use scheduled support and recreation.</p></div>
+<div class="hazard"><h4>03 · Distance from Earth</h4><p>Communication delays and limited supplies increase the need for onboard medical capability, crew training, reliable records and predefined escalation plans.</p></div>
+<div class="hazard"><h4>04 · Altered gravity</h4><p>Microgravity can contribute to bone and muscle loss, cardiovascular adaptation, balance changes and fluid shifts. Use approved exercise and scheduled examinations.</p></div>
+<div class="hazard"><h4>05 · Hostile closed environments</h4><p>Constrained living conditions, air quality, contaminants and microorganisms can affect health. Monitor environmental sensors, hygiene and illness reports.</p></div>
+</div></div>
+<div class="panel"><h3>What should be measured?</h3><div class="cards">
+<div class="hazard"><h4>Routine self-monitoring</h4><p>Heart rate, blood pressure, temperature, sleep, mood, symptoms, exercise and nutrition observations.</p></div>
+<div class="hazard"><h4>Device and environment data</h4><p>Personal/spacecraft dosimetry, air quality, carbon dioxide, temperature and other environmental telemetry.</p></div>
+<div class="hazard"><h4>Scheduled medical examinations</h4><p>Blood and saliva biomarkers, bone-health assessment, vision/ocular examinations, ultrasound and fitness assessments as mission protocols require.</p></div>
+<div class="hazard"><h4>Why combine them?</h4><p>A single vital sign cannot establish bone density, immune function, eye structure or overall medical status. Self-monitoring complements—not replaces—clinical examinations.</p></div>
+</div></div>
+</section>
+
+<section id="guide" class="view hidden">
+<div class="panel"><h3>Mission-safe health guidance</h3>
+<div class="notice success"><strong>Routine:</strong> Continue scheduled monitoring and approved preventive routines when measurements are complete and no concerning symptoms or alerts are present.</div>
+<div class="notice alert"><strong>Attention:</strong> Follow the mission-approved repeat-measurement procedure and contact the designated medical team when a result is outside personal approved limits, a trend is unusual or symptoms persist.</div>
+<div class="notice danger"><strong>Urgent:</strong> For severe, rapidly worsening or potentially life-threatening symptoms, follow the spacecraft emergency checklist and contact the onboard/ground medical authority immediately. Do not wait for this app.</div>
+<h3>Preventive health principles</h3><ul class="muted"><li>Follow mission-prescribed exercise and nutrition plans.</li><li>Maintain a consistent sleep routine where possible.</li><li>Use radiation monitoring and shelter instructions from mission control.</li><li>Follow hygiene and infection-control procedures.</li><li>Attend scheduled medical examinations and report changes honestly.</li><li>Use only mission-approved medication and treatment protocols under qualified medical oversight.</li></ul>
+<div class="notice">This prototype does not diagnose, prescribe, calculate clinical risk, establish medical thresholds or replace a flight surgeon. Any real deployment requires clinical validation, human-factors testing, cybersecurity review and approval by the responsible space agency.</div></div>
+<div class="panel"><h3>Research starting points</h3><ul class="muted">
+<li><a href="https://www.nasa.gov/hrp/hazards/" target="_blank" rel="noopener">NASA Human Research Program — Hazards</a></li>
+<li><a href="https://www.nasa.gov/hrp/risks/" target="_blank" rel="noopener">NASA Human Research Program — Risks</a></li>
+<li><a href="https://www.nasa.gov/hrp/ongoing-hrp-research/" target="_blank" rel="noopener">NASA — Ongoing HRP Research</a></li>
+<li><a href="https://www.asc-csa.gc.ca/eng/news/articles/2026/2026-02-26-monitoring-radiation-astronaut-health.asp" target="_blank" rel="noopener">Canadian Space Agency — Monitoring Radiation and Astronaut Health</a></li>
+<li><a href="https://www.asc-csa.gc.ca/eng/iss/science/why-do-we-conduct-science-experiments-in-space.asp" target="_blank" rel="noopener">Canadian Space Agency — Why Conduct Science in Space?</a></li>
+</ul></div></section>
+</main>
+<footer>ORBITAL HEALTH · EDUCATIONAL SOFTWARE PROTOTYPE · DEMONSTRATION DATA ONLY · NOT FOR MEDICAL USE</footer>
+<script>
+const tabs=[...document.querySelectorAll('.tab')];
+function showTab(id){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('hidden',x.id!==id));tabs.forEach(x=>x.setAttribute('aria-selected',String(x.dataset.tab===id)));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.body-part').forEach(el=>el.addEventListener('click',()=>{
+ document.querySelectorAll('.body-part').forEach(x=>x.classList.remove('active'));el.classList.add('active');
+ const data={
+ brain:['BRAIN & NERVOUS SYSTEM','Behavior, sleep and neurological function','Relevant observations can include sleep patterns, mood, fatigue, balance and visual changes.','Possible methods: questionnaires, actigraphy, clinical neurological and vision examinations.'],
+ heart:['CARDIOVASCULAR SYSTEM','Heart and circulation','Heart rate, blood pressure, exercise tolerance and symptoms may help characterize cardiovascular adaptation.','Possible methods: approved vital-sign devices, exercise assessments and clinician-directed examinations.'],
+ bones:['BONE & MUSCLE SYSTEM','Musculoskeletal health','Microgravity can contribute to bone and muscle loss. Exercise performance and scheduled bone-health assessments matter.','Possible methods: mission exercise records, strength assessments and scheduled imaging.'],
+ immune:['IMMUNE SYSTEM','Immune and infection-related observations','Illness reports and scheduled biomarkers can help the medical team assess immune-related changes.','Possible methods: symptom logs, blood/saliva sampling and clinical assessment.']
+ };const d=data[el.dataset.part];document.getElementById('bodyDetail').innerHTML=`<div class="smallcaps">${d[0]}</div><h3>${d[1]}</h3><p class="muted">${d[2]}</p><p class="hint">${d[3]}</p>`;
+}));
+document.getElementById('healthForm').addEventListener('submit',e=>{
+ e.preventDefault();const v=id=>document.getElementById(id).value.trim();const urgent=document.getElementById('urgent').checked;
+ document.getElementById('mHR').textContent=v('hr');document.getElementById('mBP').textContent=v('bp');document.getElementById('mTemp').textContent=v('temp');document.getElementById('mSleep').textContent=v('sleep');
+ const summary=document.getElementById('summary');summary.className='notice '+(urgent?'danger':'success');
+ summary.textContent=urgent?'URGENT FLAG RECORDED: Follow the mission emergency checklist and notify the designated medical authority immediately. This app does not triage or diagnose.':'Check-in entered in this browser session. Compare these entries with the astronaut’s approved personal limits and follow mission medical procedures.';
+ const result=document.getElementById('result');result.classList.remove('hidden');result.innerHTML=`<div class="notice ${urgent?'danger':'success'}"><strong>Demonstration summary generated</strong><br>Crew: ${escapeHTML(v('crew'))}<br>Mission: ${escapeHTML(v('mission'))}<br>Mood: ${escapeHTML(v('mood'))}<br>Exercise: ${escapeHTML(v('exercise'))}<br>Nutrition: ${escapeHTML(v('nutrition'))}<br>Symptoms: ${escapeHTML(v('symptoms')||'None entered')}<br><span class="hint">Not saved to a server. Not a diagnosis or clinical assessment.</span></div><button type="button" onclick="showTab('dashboard')">View overview</button>`;
+});
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body></html>
